@@ -1,0 +1,1915 @@
+<!doctype html>
+<html lang="es-MX" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>El Patio Cine — Cartelera Independiente</title>
+  <meta name="description" content="Cartelera oficial de El Patio Cine. Cine independiente, sala única, eventos especiales, festival documental y convocatorias." />
+  <meta name="color-scheme" content="light dark" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter & Space Mono para acentos editoriales estilo Cineteca/Heliouz -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       VARIABLES DE DISEÑO (Inspiradas en cartelera.heliouz.com + El Patio Cine)
+       ========================================================================== */
+    :root,
+    html[data-theme="light"] {
+      --bg: #f8f7f4;
+      --bg-elevated: #ffffff;
+      --bg-subtle: #efede8;
+      --bg-chip: #e6e4dd;
+      --text-main: #141413;
+      --text-muted: #575653;
+      --text-faint: #878580;
+      --border-hairline: #dfddd6;
+      --border-strong: #141413;
+      --accent: #141413;
+      --accent-fg: #f8f7f4;
+      --letterboxd-green: #00e054;
+      --letterboxd-orange: #ff8000;
+      --letterboxd-blue: #40bcf4;
+      --star-color: #d97706;
+      --Ticket-accent: #b91c1c;
+      --backdrop: rgba(20, 20, 19, 0.45);
+      --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    html[data-theme="dark"] {
+      --bg: #111110;
+      --bg-elevated: #1a1a18;
+      --bg-subtle: #222220;
+      --bg-chip: #2a2a27;
+      --text-main: #f0efea;
+      --text-muted: #a3a19a;
+      --text-faint: #6e6d68;
+      --border-hairline: #2c2c29;
+      --border-strong: #f0efea;
+      --accent: #f0efea;
+      --accent-fg: #111110;
+      --star-color: #fbbf24;
+      --Ticket-accent: #ef4444;
+      --backdrop: rgba(0, 0, 0, 0.72);
+      --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      overflow-x: hidden;
+    }
+
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Utilidades inspiradas en Heliouz */
+    .hairline {
+      height: 1px;
+      background-color: var(--border-hairline);
+      width: 100%;
+    }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 9999px;
+      border: 1px solid var(--border-hairline);
+      background-color: var(--bg-elevated);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    /* Control de íconos Sol/Luna según el tema */
+    html[data-theme="light"] .icon-sun { display: none; }
+    html[data-theme="light"] .icon-moon { display: block; }
+    html[data-theme="dark"] .icon-moon { display: none; }
+    html[data-theme="dark"] .icon-sun { display: block; }
+
+    /* Botones tipo píldora y etiquetas del boceto */
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      background-color: var(--accent);
+      color: var(--accent-fg);
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .pill-btn.secondary {
+      background-color: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .pill-btn.secondary:hover {
+      border-color: var(--border-strong);
+      background-color: var(--bg-subtle);
+    }
+
+    /* Botón de día estilo boceto (con el pequeño punto a la izquierda y marco rectangular redondeado) */
+    .day-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border: 1.5px solid var(--border-hairline);
+      background-color: var(--bg-elevated);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.16s ease;
+      user-select: none;
+    }
+
+    .day-tab .day-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+      transition: transform 0.16s ease;
+    }
+
+    .day-tab:hover {
+      border-color: var(--text-main);
+      color: var(--text-main);
+    }
+
+    .day-tab:hover .day-dot {
+      transform: scale(1.25);
+    }
+
+    .day-tab[aria-pressed="true"] {
+      background-color: var(--accent);
+      color: var(--accent-fg);
+      border-color: var(--accent);
+      box-shadow: 2px 2px 0px var(--text-faint);
+    }
+
+    /* Tarjeta de película fiel al wireframe */
+    .film-card {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 0.85rem;
+      padding: 1rem;
+      box-shadow: var(--shadow-card);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .film-card:hover {
+      border-color: var(--text-faint);
+    }
+
+    /* Botón Boletos estilo flecha/etiqueta del wireframe */
+    .ticket-badge-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 0.375rem;
+      background-color: var(--bg);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .ticket-badge-btn:hover {
+      background-color: var(--accent);
+      color: var(--accent-fg);
+      transform: translate(1px, -1px);
+    }
+
+    /* Switch de preferencias (mostrar calificaciones) */
+    .switch {
+      position: relative;
+      width: 42px;
+      height: 24px;
+      border-radius: 9999px;
+      background-color: var(--bg-chip);
+      border: 1px solid var(--border-hairline);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      padding: 0;
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: var(--text-main);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .switch[aria-checked="true"] {
+      background-color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .switch[aria-checked="true"]::after {
+      transform: translateX(18px);
+      background-color: var(--accent-fg);
+    }
+
+    /* Ocultar calificaciones cuando el usuario desactiva la preferencia */
+    body.hide-ratings .letterboxd-row {
+      display: none !important;
+    }
+
+    /* Modales */
+    .modal-backdrop {
+      background-color: var(--backdrop);
+      backdrop-filter: blur(3px);
+    }
+
+    /* Scrollbar sutil para tiras horizontales en móvil */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Garantizar que el atributo HTML [hidden] prevalezca sobre utilidades flex/grid de Tailwind */
+    [hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-amber-500/20">
+
+  <noscript>
+    <div class="p-4 bg-red-600 text-white text-center text-sm">
+      El Patio Cine necesita JavaScript para mostrar la programación. Activa JavaScript en tu navegador.
+    </div>
+  </noscript>
+
+  <div id="app" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-16">
+
+    <!-- ====================================================================
+         HEADER PRINCIPAL (Fiel al boceto wireframe.jpg + controles Heliouz)
+         ==================================================================== -->
+    <header id="top-bar" class="mb-8">
+      <!-- Fila Superior: Logo Placeholder PNG + Navegación de Secciones + Controles -->
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-5 border-b" style="border-color: var(--border-hairline);">
+        
+        <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+          <!-- Esquina superior izquierda: Placeholder de imagen para el logo PNG de "EL PATIO CINE" -->
+          <a href="#cartelera" id="brand-logo" class="group flex items-center gap-3 focus:outline-none" title="El Patio Cine — Inicio">
+            <!-- Reemplaza el atributo src por la ruta de tu archivo PNG (ej. src="logo-el-patio.png") -->
+            <img src="imgs/logo.png"
+                 alt="Logo El Patio Cine"
+                 onerror="this.src='https://placehold.co/160x160/222222/ffffff?text=LOGO'"
+                 class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-contain border transition-transform duration-200 group-hover:scale-105 shrink-0"
+                 style="border-color: var(--border-hairline); background-color: var(--bg-elevated);" />
+            <span class="sr-only">El Patio Cine</span>
+          </a>
+
+          <!-- Menú Principal: Solo CARTELERA | CONVOCATORIAS -->
+          <nav aria-label="Navegación principal" class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <button type="button" data-section="cartelera"
+                    class="section-nav-btn px-3 py-1.5 rounded-lg text-sm sm:text-base md:text-lg font-bold tracking-tight transition-all"
+                    aria-current="page">
+              CARTELERA
+            </button>
+            <span class="text-xs opacity-30 select-none" aria-hidden="true">|</span>
+            <button type="button" data-section="convocatorias"
+                    class="section-nav-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm md:text-base font-medium border border-transparent transition-all">
+              CONVOCATORIAS
+            </button>
+          </nav>
+        </div>
+
+        <!-- Controles superiores derechos (Fecha, Tema Oscuro/Claro e Info Modal) -->
+        <div class="flex items-center justify-between lg:justify-end gap-2.5">
+          <div class="flex items-center gap-2">
+            <span id="date-kicker" class="text-xs font-mono-tech" style="color: var(--text-faint);"></span>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <!-- Botón de cambio de tema (Sol / Luna de Heliouz) -->
+            <button id="theme-toggle" class="icon-btn" type="button" aria-pressed="false" title="Cambiar tema claro/oscuro" aria-label="Cambiar tema">
+              <svg class="icon-moon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path d="M11.2 8.7A5 5 0 0 1 5.3 2.8a0.5 0.5 0 0 0-0.7-0.55A5.5 5.5 0 1 0 11.75 9.4a0.5 0.5 0 0 0-0.55-0.7z" fill="currentColor"/>
+              </svg>
+              <svg class="icon-sun" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <circle cx="7" cy="7" r="2.6" fill="currentColor"/>
+                <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none">
+                  <line x1="7" y1="0.8" x2="7" y2="2.2"/>
+                  <line x1="7" y1="11.8" x2="7" y2="13.2"/>
+                  <line x1="0.8" y1="7" x2="2.2" y2="7"/>
+                  <line x1="11.8" y1="7" x2="13.2" y2="7"/>
+                  <line x1="2.6" y1="2.6" x2="3.6" y2="3.6"/>
+                  <line x1="10.4" y1="10.4" x2="11.4" y2="11.4"/>
+                  <line x1="2.6" y1="11.4" x2="3.6" y2="10.4"/>
+                  <line x1="10.4" y1="3.6" x2="11.4" y2="2.6"/>
+                </g>
+              </svg>
+            </button>
+
+            <!-- Botón Acerca de / Preferencias de calificación -->
+            <button id="info-btn" class="icon-btn" type="button" aria-label="Acerca de El Patio Cine y preferencias" title="Acerca de y opciones">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M12 11v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="12" cy="7.5" r="1.1" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Días y Buscador (Solo visible en la sección CARTELERA) -->
+      <div id="cartelera-controls" class="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <!-- Tira de días: • MARTES • MIÉRCOLES • JUEVES • VIERNES • SÁBADO • DOMINGO -->
+        <div id="day-strip" role="group" aria-label="Elegir día de la semana" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 md:pb-0">
+          <!-- Generado dinámicamente por JS -->
+        </div>
+
+        <!-- Buscador + Filtro de Ciclo + Selector de Vista (Cuadrícula 3 col / Lista) -->
+        <div id="filters-row" class="flex flex-wrap sm:flex-nowrap items-center gap-2">
+          <div class="relative flex-1 sm:w-64">
+            <svg class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+              <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <input id="search-input" type="search"
+                   placeholder="buscar película, director, país…"
+                   aria-label="Buscar película, director o país"
+                   autocomplete="off"
+                   class="w-full pl-8 pr-8 py-1.5 text-xs sm:text-sm rounded-full border focus:outline-none transition-colors"
+                   style="background-color: var(--bg-elevated); border-color: var(--border-hairline); color: var(--text-main);" />
+            <button id="search-clear" type="button" aria-label="Limpiar búsqueda" hidden
+                    class="absolute right-2 top-1/2 -translate-y-1/2 p-1 opacity-60 hover:opacity-100">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Selector de modo de vista con íconos (Cuadrantes vs Lista) -->
+          <div id="view-toggle" role="group" aria-label="Modo de vista" class="inline-flex items-center rounded-full p-0.5 border" style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+            <button type="button" data-view="grid" aria-pressed="true" aria-label="Vista en cuadrícula" title="Vista en cuadrícula" class="view-btn p-1.5 rounded-full transition-all flex items-center justify-center">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+              </svg>
+            </button>
+            <button type="button" data-view="list" aria-pressed="false" aria-label="Vista en lista" title="Vista en lista" class="view-btn p-1.5 rounded-full transition-all flex items-center justify-center">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         CONTENIDO PRINCIPAL: CARTELERA Y SECCIONES SECUNDARIAS
+         ==================================================================== -->
+    <main id="agenda-wrap">
+      <!-- Región viva para lectores de pantalla -->
+      <p id="results-status" class="sr-only" role="status" aria-live="polite"></p>
+
+      <!-- Encabezado contextual del día seleccionado -->
+      <div id="day-header-banner" class="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+        <div>
+          <h2 id="current-day-title" class="text-lg sm:text-xl font-bold tracking-tight">Programación del Martes</h2>
+        </div>
+        <div class="text-xs font-mono-tech" style="color: var(--text-faint);">
+          Haz clic en el póster para ver la ficha completa
+        </div>
+      </div>
+
+      <!-- Contenedor de las películas (Grid de 3 columnas como en el boceto o Lista) -->
+      <div id="agenda" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <!-- Tarjetas inyectadas por JavaScript -->
+      </div>
+
+      <!-- Estado vacío de búsqueda -->
+      <div id="global-empty" hidden class="py-16 text-center rounded-2xl border border-dashed my-4" style="border-color: var(--border-hairline);">
+        <p class="text-base font-medium mb-3">Ninguna función coincide con tu búsqueda en este día</p>
+        <button id="clear-filters-btn" class="pill-btn secondary" type="button">Limpiar búsqueda</button>
+      </div>
+
+      <!-- Contenedor para secciones adicionales (CONVOCATORIAS) -->
+      <section id="secondary-section" hidden class="py-6"></section>
+
+      <!-- Apartado explicativo: ¿Cómo funciona el código de pase? -->
+      <section id="pass-explainer" class="mt-12 p-5 sm:p-6 rounded-2xl border" style="background-color: var(--bg-elevated); border-color: var(--border-hairline);">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div>
+            <span class="text-[11px] font-mono-tech uppercase tracking-widest px-2 py-0.5 rounded border inline-block mb-1.5" style="border-color: var(--border-hairline); color: var(--text-muted);">
+              Sistema de acceso
+            </span>
+            <h3 class="text-base sm:text-lg font-bold tracking-tight">¿Cómo funciona tu código de pase?</h3>
+          </div>
+          <span class="text-xs font-mono-tech" style="color: var(--text-faint);">Sin cargos en línea · Pago directo en el cine</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs leading-relaxed" style="color: var(--text-muted);">
+          <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+            <span class="font-mono-tech font-bold text-sm block mb-1" style="color: var(--text-main);">1. Elige tu función</span>
+            Selecciona la película del día, haz clic en <strong>Boletos</strong> e indica cuántas entradas necesitas apartar.
+          </div>
+          <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+            <span class="font-mono-tech font-bold text-sm block mb-1" style="color: var(--text-main);">2. Genera tu código</span>
+            El sistema te dará al instante un <strong>código de pase único</strong> (ej. <span class="font-mono-tech">PATIO-4821</span>). Guárdalo o tómale captura.
+          </div>
+          <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+            <span class="font-mono-tech font-bold text-sm block mb-1" style="color: var(--text-main);">3. Muestra y paga en taquilla</span>
+            Llega 15 minutos antes de la función, muestra tu código en la taquilla de El Patio Cine y realiza tu pago ahí mismo.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ====================================================================
+         FOOTER (Estilo Heliouz adaptado a El Patio Cine)
+         ==================================================================== -->
+    <footer id="site-footer" class="mt-10 pt-6">
+      <div class="hairline mb-6" aria-hidden="true"></div>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs" style="color: var(--text-muted);">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-semibold" style="color: var(--text-main);">El Patio Cine</span>
+          <span>·</span>
+          <span>Cine Independiente</span>
+          <span>·</span>
+          <span>Martes a Domingo</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button type="button" id="footer-about-trigger" class="underline hover:opacity-80">Preferencias de Letterboxd</button>
+          <span>·</span>
+          <span class="font-mono-tech">Boletos en taquilla al generar código de pase</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 1: ACERCA DE & PREFERENCIAS (Inspirado en #about-modal de Heliouz)
+       ====================================================================== -->
+  <div id="about-modal" hidden role="dialog" aria-modal="true" aria-labelledby="about-title"
+       class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop fixed inset-0" data-close-about aria-hidden="true"></div>
+    <div class="relative z-10 w-full max-w-md rounded-2xl p-6 border shadow-xl"
+         style="background-color: var(--bg-elevated); border-color: var(--border-hairline);">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold tracking-tight" id="about-title">El Patio Cine</h3>
+        <button type="button" data-close-about class="icon-btn" aria-label="Cerrar ventana">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <p class="text-sm leading-relaxed mb-3" style="color: var(--text-muted);">
+        Somos un espacio independiente de exhibición cinematográfica. Programamos cine de autor, clásicos, cine mexicano contemporáneo y muestras especiales de martes a domingo.
+      </p>
+      <p class="text-sm leading-relaxed mb-5" style="color: var(--text-muted);">
+        Genera tu código de pase directamente en la cartelera y preséntalo en taquilla al llegar al cine para pagar tus boletos.
+      </p>
+
+      <!-- Switch para mostrar/ocultar calificaciones de Letterboxd (idéntico al concepto de Heliouz) -->
+      <div class="flex items-center justify-between py-3 px-4 rounded-xl mb-5 border"
+           style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+        <div>
+          <span class="text-sm font-medium block" id="ratings-toggle-label">Mostrar calificaciones de Letterboxd</span>
+          <span class="text-xs" style="color: var(--text-faint);">Oculta las estrellas si prefieres entrar al cine sin prejuicios</span>
+        </div>
+        <button id="ratings-toggle" class="switch shrink-0" type="button" role="switch" aria-checked="true" aria-labelledby="ratings-toggle-label"></button>
+      </div>
+
+      <div class="flex justify-end">
+        <button type="button" data-close-about class="pill-btn">Listo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 2: FICHA DE PELÍCULA (#film-sheet)
+       ====================================================================== -->
+  <div id="film-sheet" hidden role="dialog" aria-modal="true" aria-labelledby="film-sheet-title"
+       class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="modal-backdrop fixed inset-0" data-close-sheet aria-hidden="true"></div>
+    <div class="relative z-10 w-full max-w-xl rounded-t-2xl sm:rounded-2xl p-6 border shadow-2xl max-h-[90vh] overflow-y-auto"
+         style="background-color: var(--bg-elevated); border-color: var(--border-hairline);">
+      
+      <!-- Barra superior de la ficha: solo botón Cerrar -->
+      <div class="flex items-center justify-end mb-2">
+        <button type="button" data-close-sheet class="icon-btn" aria-label="Cerrar ficha">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Cuerpo dinámico de la película -->
+      <div id="sheet-body"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 3: GENERAR PASE PARA TAQUILLA (#buy-modal)
+       ====================================================================== -->
+  <div id="buy-modal" hidden role="alertdialog" aria-modal="true" aria-labelledby="buy-modal-title" aria-describedby="buy-modal-body"
+       class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop fixed inset-0" data-close-buy aria-hidden="true"></div>
+    <div class="relative z-10 w-full max-w-md rounded-2xl p-6 border shadow-2xl"
+         style="background-color: var(--bg-elevated); border-color: var(--border-hairline);">
+      
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-mono-tech uppercase tracking-widest px-2 py-0.5 rounded border"
+              style="border-color: var(--border-strong);" id="buy-modal-title">Código de Pase · Taquilla</span>
+        <button type="button" data-close-buy class="icon-btn" aria-label="Cerrar ventana">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <h3 id="buy-film-title" class="text-xl font-bold mt-2 mb-1"></h3>
+      <p id="buy-film-meta" class="text-xs font-mono-tech mb-4" style="color: var(--text-muted);"></p>
+
+      <div id="buy-modal-body" class="p-4 rounded-xl border mb-4 space-y-3" style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+        <div class="flex items-center justify-between text-sm">
+          <span>Cantidad de boletos ($65 MXN c/u):</span>
+          <div class="flex items-center gap-2">
+            <button type="button" id="qty-minus" class="w-7 h-7 rounded-full border flex items-center justify-center font-bold" style="border-color: var(--border-strong);">-</button>
+            <span id="ticket-qty" class="font-mono-tech font-bold w-6 text-center">2</span>
+            <button type="button" id="qty-plus" class="w-7 h-7 rounded-full border flex items-center justify-center font-bold" style="border-color: var(--border-strong);">+</button>
+          </div>
+        </div>
+        <div class="hairline"></div>
+        <div class="flex items-center justify-between text-sm font-bold">
+          <span>Total a pagar en taquilla:</span>
+          <span id="ticket-total" class="font-mono-tech text-base">$130 MXN</span>
+        </div>
+      </div>
+
+      <p class="text-xs leading-relaxed mb-5" style="color: var(--text-muted);">
+        <strong>¿Cómo funciona?</strong> Al confirmar se generará un código de pase. Muéstralo directamente en la taquilla de El Patio Cine al llegar (hasta 15 minutos antes de la función) y ahí mismo realizas tu pago.
+      </p>
+
+      <div id="buy-success-msg" hidden class="mb-4 p-3 rounded-xl bg-emerald-600 text-white text-xs font-medium text-center"></div>
+
+      <div class="flex items-center justify-end gap-2">
+        <button type="button" data-close-buy class="pill-btn secondary">Cancelar</button>
+        <button type="button" id="confirm-buy-btn" class="pill-btn">Generar código de pase →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       LÓGICA DE LA APLICACIÓN (JavaScript Vanilla autocontenido)
+       ====================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ----------------------------------------------------------------------
+         1. BASE DE DATOS DE LA CARTELERA DE "EL PATIO CINE" (5 FUNCIONES POR DÍA)
+         Cada día lleva su propio color vivo para el círculo indicador.
+         ---------------------------------------------------------------------- */
+      const DAYS = [
+        { id: 'martes', label: 'Martes', dateStr: 'Martes 17 Nov', color: '#ff2a85' },     // Rosa mexicano / Magenta vivo
+        { id: 'miercoles', label: 'Miércoles', dateStr: 'Miércoles 18 Nov', color: '#00d2ff' }, // Cian eléctrico
+        { id: 'jueves', label: 'Jueves', dateStr: 'Jueves 19 Nov', color: '#ffb703' },   // Amarillo vivo
+        { id: 'viernes', label: 'Viernes', dateStr: 'Viernes 20 Nov', color: '#00e676' }, // Verde esmeralda neón
+        { id: 'sabado', label: 'Sábado', dateStr: 'Sábado 21 Nov', color: '#ff5400' },   // Naranja brillante
+        { id: 'domingo', label: 'Domingo', dateStr: 'Domingo 22 Nov', color: '#9d4edd' } // Violeta intenso
+      ];
+
+      const SCHEDULE = {
+        martes: [
+          {
+            id: '10-cosas-que-odio-de-ti',
+            title: '10 cosas que odio de ti',
+            originalTitle: '10 Things I Hate About You',
+            wikiPage: '10_Things_I_Hate_About_You',
+            year: 1999,
+            director: 'Gil Junger',
+            country: 'Estados Unidos',
+            duration: '97 min',
+            rating: 3.8,
+            time: '13:00',
+            ciclo: 'Clásicos Juveniles',
+            posterBg: '1e3a8a/dbeafe',
+            letterboxdUrl: 'https://letterboxd.com/film/10-things-i-hate-about-you/',
+            synopsis: 'Las hermanas Stratford son muy distintas: la bella y popular Bianca nunca ha salido con un chico, mientras que Kat es arisca y con mal genio. Su padre decreta que Bianca solo podrá tener novio si Kat sale con alguien primero.'
+          },
+          {
+            id: 'pretty-woman',
+            title: 'Pretty Woman',
+            originalTitle: 'Pretty Woman',
+            wikiPage: 'Pretty_Woman',
+            year: 1990,
+            director: 'Garry Marshall',
+            country: 'Estados Unidos',
+            duration: '119 min',
+            rating: 3.6,
+            time: '15:15',
+            ciclo: 'Romances de los 90',
+            posterBg: '9d174d/fce7f3',
+            letterboxdUrl: 'https://letterboxd.com/film/pretty-woman/',
+            synopsis: 'Durante un viaje de negocios a Los Ángeles, Edward, un exitoso ejecutivo que compra y vende empresas, contrata a Vivian, una carismática mujer con quien vivirá una semana que transformará la vida de ambos.'
+          },
+          {
+            id: 'el-diario-de-noa',
+            title: 'El diario de Noa',
+            originalTitle: 'The Notebook',
+            wikiPage: 'The_Notebook',
+            year: 2004,
+            director: 'Nick Cassavetes',
+            country: 'Estados Unidos',
+            duration: '123 min',
+            rating: 3.8,
+            time: '17:45',
+            ciclo: 'Dramas Románticos',
+            posterBg: '7c2d12/ffedd5',
+            letterboxdUrl: 'https://letterboxd.com/film/the-notebook/',
+            synopsis: 'En una residencia de ancianos, un hombre lee a una mujer una historia de amor escrita en su viejo cuaderno de notas: la pasión juvenil entre Noah y Allie en la Carolina del Sur de los años cuarenta.'
+          },
+          {
+            id: 'mujercitas',
+            title: 'Mujercitas',
+            originalTitle: 'Little Women',
+            wikiPage: 'Little_Women_(2019_film)',
+            year: 2019,
+            director: 'Greta Gerwig',
+            country: 'Estados Unidos',
+            duration: '135 min',
+            rating: 4.2,
+            time: '20:15',
+            ciclo: 'Miradas Contemporáneas',
+            posterBg: '78350f/fef3c7',
+            letterboxdUrl: 'https://letterboxd.com/film/little-women-2019/',
+            synopsis: 'Jo March reflexiona sobre su vida y la de sus tres hermanas —Meg, Beth y Amy—, cuatro jóvenes decididas a vivir bajo sus propias reglas en la Nueva Inglaterra posterior a la Guerra de Secesión.'
+          },
+          {
+            id: 'expediente-warren-el-conjuro',
+            title: 'Expediente Warren: El conjuro',
+            originalTitle: 'The Conjuring',
+            wikiPage: 'The_Conjuring',
+            year: 2013,
+            director: 'James Wan',
+            country: 'Estados Unidos',
+            duration: '112 min',
+            rating: 3.8,
+            time: '22:45',
+            ciclo: 'Función Nocturna de Terror',
+            posterBg: '0f172a/e2e8f0',
+            letterboxdUrl: 'https://letterboxd.com/film/the-conjuring/',
+            synopsis: 'Los investigadores paranormales Ed y Lorraine Warren acuden en ayuda de la familia Perron, quienes experimentan una presencia cada vez más oscura y violenta en su granja recién adquirida en Rhode Island.'
+          }
+        ],
+        miercoles: [
+          {
+            id: 'el-viaje-de-chihiro',
+            title: 'El viaje de Chihiro',
+            originalTitle: 'Spirited Away',
+            wikiPage: 'Spirited_Away',
+            year: 2001,
+            director: 'Hayao Miyazaki',
+            country: 'Japón',
+            duration: '125 min',
+            rating: 4.5,
+            time: '13:00',
+            ciclo: 'Universo Animado',
+            posterBg: '7f1d1d/fee2e2',
+            letterboxdUrl: 'https://letterboxd.com/film/spirited-away/',
+            synopsis: 'Durante el traslado de su familia a los suburbios, Chihiro, una niña de diez años, se adentra en un mundo gobernado por dioses, brujas y espíritus donde los humanos son transformados en bestias.'
+          },
+          {
+            id: 'el-extrano-mundo-de-jack',
+            title: 'El extraño mundo de Jack',
+            originalTitle: 'The Nightmare Before Christmas',
+            wikiPage: 'The_Nightmare_Before_Christmas',
+            year: 1993,
+            director: 'Henry Selick',
+            country: 'Estados Unidos',
+            duration: '76 min',
+            rating: 4.0,
+            time: '15:30',
+            ciclo: 'Stop-Motion de Culto',
+            posterBg: '311042/f5d0fe',
+            letterboxdUrl: 'https://letterboxd.com/film/the-nightmare-before-christmas/',
+            synopsis: 'Cansado de la rutina anual de sustos en la Ciudad de Halloween, Jack Skellington, el Rey de las Calabazas, descubre por accidente la Ciudad de la Navidad y decide secuestrar a Santa Claus para tomar su lugar.'
+          },
+          {
+            id: 'aunque-nuestro-amor-se-desvanezca-esta-noche',
+            title: 'Aunque nuestro amor se desvanezca esta noche',
+            originalTitle: 'Even If This Love Disappears from the World Tonight',
+            wikiPage: 'Even_If_This_Love_Disappears_From_the_World_Tonight_(2022_film)',
+            year: 2022,
+            director: 'Takahiro Miki',
+            country: 'Japón',
+            duration: '121 min',
+            rating: 3.8,
+            time: '17:30',
+            ciclo: 'Melodramas Asiáticos',
+            posterBg: '0369a1/e0f2fe',
+            letterboxdUrl: 'https://letterboxd.com/film/even-if-this-love-disappears-tonight/',
+            synopsis: 'Maori padece amnesia anterógrada y olvida todo al quedarse dormida cada noche. Cuando comienza una relación con su compañero Toru, él se propone llenarle cada día de recuerdos felices a través de su diario.'
+          },
+          {
+            id: 'soy-el-secreto-de-tu-corazon',
+            title: 'Soy el secreto de tu corazón',
+            originalTitle: 'I Am the Secret in Your Heart',
+            wikiPage: 'I_Am_the_Secret_in_Your_Heart',
+            year: 2024,
+            director: 'Lai Meng-chieh',
+            country: 'Taiwán',
+            duration: '112 min',
+            rating: 3.4,
+            time: '20:00',
+            ciclo: 'Juventud y Primer Amor',
+            posterBg: '065f46/d1fae5',
+            letterboxdUrl: 'https://letterboxd.com/film/i-am-the-secret-in-your-heart/',
+            synopsis: 'En la escuela todos ven a Xiao-xia y a su amigo de la infancia Yuzu como una pareja inseparable; sin embargo, la llegada del brillante estudiante de intercambio Cheng Yih desata un dulce triángulo amoroso de verano.'
+          },
+          {
+            id: 'pinceladas-de-amor',
+            title: 'Pinceladas de amor',
+            originalTitle: 'Drawing Closer',
+            wikiPage: 'Drawing_Closer',
+            year: 2024,
+            director: 'Takahiro Miki',
+            country: 'Japón',
+            duration: '118 min',
+            rating: 3.8,
+            time: '22:15',
+            ciclo: 'Melodramas Asiáticos',
+            posterBg: '1e40af/dbeafe',
+            letterboxdUrl: 'https://letterboxd.com/film/drawing-closer/',
+            synopsis: 'Con solo un año de vida por delante tras ser diagnosticado con un tumor en el corazón, el joven artista Akito encuentra un nuevo sentido a sus días al conocer a Haruna, una chica luminosa en el hospital a quien solo le quedan seis meses.'
+          }
+        ],
+        jueves: [
+          {
+            id: 'landscape-in-the-mist',
+            title: 'Landscape in the Mist',
+            originalTitle: 'Topio stin omichli',
+            wikiPage: 'Landscape_in_the_Mist',
+            year: 1988,
+            director: 'Theo Angelopoulos',
+            country: 'Grecia',
+            duration: '127 min',
+            rating: 4.3,
+            time: '13:00',
+            ciclo: 'Clásicos',
+            posterBg: '1e293b/e2e8f0',
+            letterboxdUrl: 'https://letterboxd.com/film/landscape-in-the-mist/',
+            synopsis: 'Dos niños griegos, Voula y el pequeño Alexandros, emprenden un viaje hipnótico y poético en tren hacia Alemania en busca de un padre que quizá solo existe en su imaginación.'
+          },
+          {
+            id: 'tenemos-la-carne',
+            title: 'Tenemos la carne',
+            originalTitle: 'We Are the Flesh',
+            wikiPage: 'We_Are_the_Flesh',
+            year: 2016,
+            director: 'Emiliano Rocha Minter',
+            country: 'México',
+            duration: '79 min',
+            rating: 3.1,
+            time: '15:30',
+            ciclo: 'Cine Mexicano Radical',
+            posterBg: '450a0a/fecaca',
+            posterUrl: 'https://image.tmdb.org/t/p/w500/y4vLIUysOqY16XPiaZ1W9oeXBc1.jpg',
+            letterboxdUrl: 'https://letterboxd.com/film/we-are-the-flesh/',
+            synopsis: 'En un México postapocalíptico, dos hermanos deambulan buscando refugio hasta encontrar a Mariano, un hombre solitario que los invita a transformar una cueva urbana en un útero delirante.'
+          },
+          {
+            id: 'sueno-en-otro-idioma',
+            title: 'Sueño en otro idioma',
+            originalTitle: 'I Dream in Another Language',
+            wikiPage: 'I_Dream_in_Another_Language',
+            year: 2017,
+            director: 'Ernesto Contreras',
+            country: 'México',
+            duration: '103 min',
+            rating: 3.9,
+            time: '17:30',
+            ciclo: 'Voces de Nuestra Tierra',
+            posterBg: '064e3b/d1fae5',
+            letterboxdUrl: 'https://letterboxd.com/film/i-dream-in-another-language/',
+            synopsis: 'Martín, un joven lingüista, llega a un pueblo en la selva para intentar reunir a don Evaristo y don Isauro, los dos últimos hablantes de una lengua milenaria llamada zikril que llevan 50 años sin dirigirse la palabra.'
+          },
+          {
+            id: 'la-la-land',
+            title: 'La La Land',
+            originalTitle: 'La La Land',
+            wikiPage: 'La_La_Land',
+            year: 2016,
+            director: 'Damien Chazelle',
+            country: 'Estados Unidos',
+            duration: '128 min',
+            rating: 4.1,
+            time: '19:45',
+            ciclo: 'Musicales al Anochecer',
+            posterBg: '311042/f5d0fe',
+            letterboxdUrl: 'https://letterboxd.com/film/la-la-land/',
+            synopsis: 'Mia, una aspirante a actriz que trabaja como barista, y Sebastian, un pianista de jazz obstinado con abrir su propio club, se enamoran en Los Ángeles mientras luchan por conciliar el amor con sus sueños artísticos.'
+          },
+          {
+            id: 'matando-cabos',
+            title: 'Matando Cabos',
+            originalTitle: 'Matando Cabos',
+            wikiPage: 'Matando_Cabos',
+            year: 2004,
+            director: 'Alejandro Lozano',
+            country: 'México',
+            duration: '94 min',
+            rating: 3.6,
+            time: '22:15',
+            ciclo: 'Función de Medianoche',
+            posterBg: '78350f/fef3c7',
+            letterboxdUrl: 'https://letterboxd.com/film/matando-cabos/',
+            synopsis: 'En una noche caótica, Jaque y Mudo deben encontrar la manera de regresar al temido empresario Óscar Cabos a su casa sin que nadie note que está inconsciente en la cajuela, cruzándose con secuestradores y un exluchador legendario.'
+          }
+        ],
+        viernes: [
+          {
+            id: 'fantastic-mr-fox',
+            title: 'Fantastic Mr. Fox',
+            originalTitle: 'Fantastic Mr. Fox',
+            wikiPage: 'Fantastic_Mr._Fox_(film)',
+            year: 2009,
+            director: 'Wes Anderson',
+            country: 'Estados Unidos',
+            duration: '87 min',
+            rating: 4.3,
+            time: '12:30',
+            ciclo: 'Animación de Autor',
+            posterBg: 'b45309/fef3c7',
+            letterboxdUrl: 'https://letterboxd.com/film/fantastic-mr-fox/',
+            synopsis: 'Tras doce años de pacífica vida doméstica, el Sr. Fox rompe la promesa que le hizo a su esposa y planea el último gran golpe contra tres malvados granjeros: Boggis, Bunce y Bean.'
+          },
+          {
+            id: 'todo-sobre-mi-madre',
+            title: 'Todo sobre mi madre',
+            originalTitle: 'All About My Mother',
+            wikiPage: 'All_About_My_Mother',
+            year: 1999,
+            director: 'Pedro Almodóvar',
+            country: 'España',
+            duration: '101 min',
+            rating: 4.2,
+            time: '14:30',
+            ciclo: 'Maestros Iberoamericanos',
+            posterBg: '991b1b/fee2e2',
+            letterboxdUrl: 'https://letterboxd.com/film/all-about-my-mother/',
+            synopsis: 'Tras la trágica muerte de su hijo adolescente el día de su cumpleaños, Manuela viaja de Madrid a Barcelona en busca del padre del joven, tejiendo una red de solidaridad entre mujeres inolvidables.'
+          },
+          {
+            id: 'city-of-angels',
+            title: 'City of Angels',
+            originalTitle: 'City of Angels',
+            wikiPage: 'City_of_Angels_(film)',
+            year: 1998,
+            director: 'Brad Silberling',
+            country: 'Estados Unidos',
+            duration: '114 min',
+            rating: 3.2,
+            time: '16:40',
+            ciclo: 'Romances de los 90',
+            posterBg: '1e293b/e2e8f0',
+            letterboxdUrl: 'https://letterboxd.com/film/city-of-angels/',
+            synopsis: 'Seth (Nicolas Cage), un ángel que vela de forma invisible por los habitantes de Los Ángeles, se enamora profundamente de Maggie, una cirujana cardiaca, y considera renunciar a su inmortalidad.'
+          },
+          {
+            id: 'kill-bill-vol-1',
+            title: 'Kill Bill: Vol. 1',
+            originalTitle: 'Kill Bill: Vol. 1',
+            wikiPage: 'Kill_Bill:_Volume_1',
+            year: 2003,
+            director: 'Quentin Tarantino',
+            country: 'Estados Unidos',
+            duration: '111 min',
+            rating: 4.2,
+            time: '19:00',
+            ciclo: 'Clásicos de Culto',
+            posterBg: 'ca8a04/fef9c3',
+            letterboxdUrl: 'https://letterboxd.com/film/kill-bill-vol-1/',
+            synopsis: 'Tras despertar de un coma de cuatro años provocado por su antiguo escuadrón de asesinos el día de su boda, "La Novia" emprende una implacable venganza alrededor del mundo espada Hattori Hanzō en mano.'
+          },
+          {
+            id: 'y-tu-mama-tambien',
+            title: 'Y tu mamá también',
+            originalTitle: 'Y tu mamá también',
+            wikiPage: 'Y_tu_mamá_también',
+            year: 2001,
+            director: 'Alfonso Cuarón',
+            country: 'México',
+            duration: '106 min',
+            rating: 4.2,
+            time: '21:15',
+            ciclo: 'Clásicos Mexicanos',
+            posterBg: '0369a1/e0f2fe',
+            letterboxdUrl: 'https://letterboxd.com/film/y-tu-mama-tambien/',
+            synopsis: 'Julio y Tenoch, dos adolescentes de diecisiete años, emprenden un viaje por carretera hacia una playa secreta llamada Boca del Cielo acompañados de Luisa, una mujer española de veintiocho años.'
+          },
+          {
+            id: 'carol',
+            title: 'Carol',
+            originalTitle: 'Carol',
+            wikiPage: 'Carol_(film)',
+            year: 2015,
+            director: 'Todd Haynes',
+            country: 'Reino Unido / EE. UU.',
+            duration: '118 min',
+            rating: 4.2,
+            time: '23:20',
+            ciclo: 'Miradas Contemporáneas',
+            posterBg: '134e4a/ccfbf1',
+            letterboxdUrl: 'https://letterboxd.com/film/carol-2015/',
+            synopsis: 'En el Nueva York de los años cincuenta, Therese Belivet, una joven aspirante a fotógrafa que trabaja en unos grandes almacenes, conoce a Carol Aird, una mujer elegante atrapada en un matrimonio sin amor.'
+          }
+        ],
+        sabado: [
+          {
+            id: 'tony',
+            title: 'Tony',
+            originalTitle: 'Tony',
+            wikiPage: 'Tony_(2026_film)',
+            year: 2026,
+            director: 'Matt Johnson',
+            country: 'Estados Unidos',
+            duration: '106 min',
+            rating: 3.8,
+            time: '13:00',
+            ciclo: 'Estrenos Independientes',
+            posterBg: '7c2d12/ffedd5',
+            letterboxdUrl: 'https://letterboxd.com/film/tony-2026/',
+            synopsis: 'En el verano de 1975, un joven Anthony Bourdain de diecinueve años viaja a Provincetown, Massachusetts, y se adentra por primera vez en el caótico, febril y apasionante mundo de la cocina de un restaurante.'
+          },
+          {
+            id: 'un-poeta',
+            title: 'Un poeta',
+            originalTitle: 'A Poet',
+            wikiPage: 'A_Poet_(film)',
+            year: 2025,
+            director: 'Simón Mesa Soto',
+            country: 'Colombia',
+            duration: '120 min',
+            rating: 3.9,
+            time: '15:15',
+            ciclo: 'Cine Latinoamericano Contemporáneo',
+            posterBg: '365314/ecfccb',
+            letterboxdUrl: 'https://letterboxd.com/film/a-poet-2025/',
+            synopsis: 'Óscar Restrepo, un veterano escritor de Medellín cuya obsesión por la poesía no le ha traído gloria alguna, encuentra una chispa de redención al convertirse en mentor de Yurlady, una adolescente con un talento extraordinario.'
+          },
+          {
+            id: 'blade-runner',
+            title: 'Blade Runner',
+            originalTitle: 'Blade Runner',
+            wikiPage: 'Blade_Runner',
+            year: 1982,
+            director: 'Ridley Scott',
+            country: 'Estados Unidos',
+            duration: '117 min',
+            rating: 4.1,
+            time: '17:45',
+            ciclo: 'Ciencia Ficción de Culto',
+            posterBg: '0f172a/cbd5e1',
+            letterboxdUrl: 'https://letterboxd.com/film/blade-runner/',
+            synopsis: 'En un Los Ángeles distópico y lluvioso, el exagente Rick Deckard es llamado de vuelta al servicio para rastrear y "retirar" a cuatro replicantes fugitivos que han regresado clandestinamente a la Tierra en busca de su creador.'
+          },
+          {
+            id: 'evil-dead-rise',
+            title: 'Evil Dead Rise',
+            originalTitle: 'Evil Dead Rise',
+            wikiPage: 'Evil_Dead_Rise',
+            year: 2023,
+            director: 'Lee Cronin',
+            country: 'Estados Unidos / Irlanda',
+            duration: '96 min',
+            rating: 3.3,
+            time: '20:15',
+            ciclo: 'Noche de Sangre y Posesión',
+            posterBg: '450a0a/fecaca',
+            letterboxdUrl: 'https://letterboxd.com/film/evil-dead-rise/',
+            synopsis: 'El reencuentro entre dos hermanas distanciadas se ve interrumpido cuando el hallazgo de un antiguo libro en las entrañas de su edificio en Los Ángeles desata demonios poseedores de carne en una brutal batalla por sobrevivir.'
+          },
+          {
+            id: 'todo-en-todas-partes-al-mismo-tiempo',
+            title: 'Todo en todas partes al mismo tiempo',
+            originalTitle: 'Everything Everywhere All at Once',
+            wikiPage: 'Everything_Everywhere_All_at_Once',
+            year: 2022,
+            director: 'Daniel Kwan y Daniel Scheinert',
+            country: 'Estados Unidos',
+            duration: '139 min',
+            rating: 4.3,
+            time: '22:15',
+            ciclo: 'Función Estelar de Sábado',
+            posterBg: '311042/f5d0fe',
+            letterboxdUrl: 'https://letterboxd.com/film/everything-everywhere-all-at-once/',
+            synopsis: 'Evelyn Wang, una inmigrante china agobiada por los impuestos de su lavandería y la tensa relación con su hija, descubre que debe conectar con versiones de sí misma en universos paralelos para evitar la destrucción del multiverso.'
+          }
+        ],
+        domingo: [
+          {
+            id: 'cinema-paradiso',
+            title: 'Cinema Paradiso',
+            originalTitle: 'Nuovo Cinema Paradiso',
+            wikiPage: 'Cinema_Paradiso',
+            year: 1988,
+            director: 'Giuseppe Tornatore',
+            country: 'Italia',
+            duration: '124 min',
+            rating: 4.4,
+            time: '12:30',
+            ciclo: 'Matiné de Domingo',
+            posterBg: '7c2d12/fed7aa',
+            letterboxdUrl: 'https://letterboxd.com/film/cinema-paradiso/',
+            synopsis: 'Un director de cine recuerda su infancia en su pueblo natal de Sicilia y su entrañable amistad con Alfredo, el proyeccionista del cine parroquial.'
+          },
+          {
+            id: 'sueno-dom',
+            title: 'Sueño en otro idioma',
+            originalTitle: 'I Dream in Another Language',
+            wikiPage: 'I_Dream_in_Another_Language',
+            year: 2017,
+            director: 'Ernesto Contreras',
+            country: 'México',
+            duration: '103 min',
+            rating: 3.9,
+            time: '15:00',
+            ciclo: 'Voces de Nuestra Tierra',
+            posterBg: '064e3b/d1fae5',
+            letterboxdUrl: 'https://letterboxd.com/film/i-dream-in-another-language/',
+            synopsis: 'Última función de la semana de esta joya del cine mexicano reciente.'
+          },
+          {
+            id: 'landscape-dom',
+            title: 'Landscape in the Mist',
+            originalTitle: 'Topio stin omichli',
+            wikiPage: 'Landscape_in_the_Mist',
+            year: 1988,
+            director: 'Theo Angelopoulos',
+            country: 'Grecia',
+            duration: '127 min',
+            rating: 4.3,
+            time: '17:15',
+            ciclo: 'Clásicos en 35mm',
+            posterBg: '1e293b/e2e8f0',
+            letterboxdUrl: 'https://letterboxd.com/film/landscape-in-the-mist/',
+            synopsis: 'El viaje de Voula y Alexandros hacia la frontera envuelta en niebla.'
+          },
+          {
+            id: 'la-la-land-dom',
+            title: 'La La Land',
+            originalTitle: 'La La Land',
+            wikiPage: 'La_La_Land',
+            year: 2016,
+            director: 'Damien Chazelle',
+            country: 'Estados Unidos',
+            duration: '128 min',
+            rating: 4.1,
+            time: '19:45',
+            ciclo: 'Musicales al Anochecer',
+            posterBg: '311042/f5d0fe',
+            letterboxdUrl: 'https://letterboxd.com/film/la-la-land/',
+            synopsis: 'Cierra el fin de semana con la música de Justin Hurwitz en sonido envolvente.'
+          },
+          {
+            id: 'matando-cabos-dom',
+            title: 'Matando Cabos',
+            originalTitle: 'Matando Cabos',
+            wikiPage: 'Matando_Cabos',
+            year: 2004,
+            director: 'Alejandro Lozano',
+            country: 'México',
+            duration: '94 min',
+            rating: 3.6,
+            time: '22:10',
+            ciclo: 'Función de Medianoche',
+            posterBg: '78350f/fef3c7',
+            letterboxdUrl: 'https://letterboxd.com/film/matando-cabos/',
+            synopsis: 'Despide el domingo con Mascarita y Rubén "El Mudo" en pantalla grande.'
+          }
+        ]
+      };
+
+      /* ----------------------------------------------------------------------
+         2. ESTADO DE LA APLICACIÓN Y CACHÉ DE PÓSTERS DE LETTERBOXD / TMDB
+         ---------------------------------------------------------------------- */
+      const state = {
+        activeSection: 'cartelera', // 'cartelera' | 'convocatorias'
+        selectedDay: 'martes',      // Comenzamos en Martes como pidió el usuario
+        searchQuery: '',
+        viewMode: 'grid',           // 'grid' (fiel al wireframe) | 'list'
+        showRatings: true,
+        activeFilm: SCHEDULE.martes[0],
+        ticketQty: 2
+      };
+
+      // Opcional: Si tienes una API Key gratuita de TMDB (la base de datos que usa Letterboxd),
+      // puedes pegarla aquí para priorizar su consulta directa.
+      const TMDB_API_KEY = '';
+      const posterCache = new Map();
+      const pendingPosterRequests = new Map();
+
+      /* ----------------------------------------------------------------------
+         3. CONECTOR DE PORTADAS CON LETTERBOXD + RESPALDOS AUTOMÁTICOS
+         ---------------------------------------------------------------------- */
+      function renderStarsSVG(rating) {
+        const fullStars = Math.floor(rating);
+        const hasHalf = (rating - fullStars) >= 0.25;
+        let starsHtml = '';
+
+        for (let i = 1; i <= 5; i++) {
+          if (i <= fullStars) {
+            starsHtml += `<span class="text-amber-500 text-sm leading-none" aria-hidden="true">★</span>`;
+          } else if (i === fullStars + 1 && hasHalf) {
+            starsHtml += `<span class="text-amber-500/80 text-sm leading-none" aria-hidden="true">½</span>`;
+          } else {
+            starsHtml += `<span class="opacity-25 text-sm leading-none" aria-hidden="true">★</span>`;
+          }
+        }
+        return starsHtml;
+      }
+
+      // Genera el placeholder de respaldo mientras carga la portada real
+      function getFallbackPlaceholderUrl(film) {
+        const encoded = encodeURIComponent(film.title.toUpperCase() + '\n(' + film.year + ')');
+        return `https://placehold.co/320x480/${film.posterBg}?text=${encoded}`;
+      }
+
+      // Obtiene la URL de portada actual (de caché, propiedad directa o placeholder temporal)
+      function getPosterUrl(film) {
+        if (film.posterUrl) return film.posterUrl;
+        const cached = posterCache.get(film.letterboxdUrl || film.title);
+        if (cached) return cached;
+        return getFallbackPlaceholderUrl(film);
+      }
+
+      // Extrae el póster directamente del bloque JSON-LD de la página de Letterboxd
+      async function fetchPosterFromLetterboxdPage(letterboxdUrl) {
+        if (!letterboxdUrl) return null;
+        const proxies = [
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(letterboxdUrl)}`,
+          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(letterboxdUrl)}`
+        ];
+
+        for (const proxyUrl of proxies) {
+          try {
+            const response = await fetch(proxyUrl);
+            if (!response.ok) continue;
+            const html = await response.text();
+
+            const jsonLdMatch = html.match(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
+            if (jsonLdMatch && jsonLdMatch[1]) {
+              const rawJson = jsonLdMatch[1].replace(/\/\*[\s\S]*?\*\//g, '').trim();
+              const parsed = JSON.parse(rawJson);
+              if (parsed && parsed.image && !parsed.image.includes('empty-poster')) {
+                return parsed.image.replace(/-0-\d+-0-\d+-crop/, '-0-500-0-750-crop');
+              }
+            }
+
+            const ltrbxdCdnMatch = html.match(/https:\/\/a\.ltrbxd\.com\/resized\/[^\s"'<>]+?-crop\.jpg/i);
+            if (ltrbxdCdnMatch && ltrbxdCdnMatch[0] && !ltrbxdCdnMatch[0].includes('empty-poster')) {
+              return ltrbxdCdnMatch[0].replace(/-0-\d+-0-\d+-crop/, '-0-500-0-750-crop');
+            }
+          } catch (err) {
+            // Intentar con el siguiente proxy
+          }
+        }
+        return null;
+      }
+
+      // Extrae únicamente el póster oficial dentro del recuadro ".infobox" (sección 0) de Wikipedia,
+      // evitando fotos de directores o actores que aparecen en el cuerpo del artículo.
+      async function fetchWikipediaInfoboxPoster(pageTitle, lang, directorLastName) {
+        if (!pageTitle) return null;
+        try {
+          const url = `https://${lang}.wikipedia.org/w/api.php?action=parse&page=${encodeURIComponent(pageTitle)}&prop=text&section=0&redirects=1&format=json&origin=*`;
+          const res = await fetch(url);
+          if (!res.ok) return null;
+          const data = await res.json();
+          const html = data?.parse?.text?.['*'];
+          if (!html) return null;
+
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const imgs = doc.querySelectorAll('.infobox .infobox-image img, .infobox img');
+
+          for (const img of imgs) {
+            let src = img.getAttribute('src') || '';
+            const srcset = img.getAttribute('srcset') || '';
+
+            // Preferir la versión 2x o 1.5x del srcset que ya está generada en alta resolución en Wikimedia
+            if (srcset) {
+              const candidates = srcset
+                .split(',')
+                .map(part => part.trim().split(/\s+/)[0])
+                .filter(Boolean);
+              if (candidates.length > 0) {
+                src = candidates[candidates.length - 1];
+              }
+            }
+
+            if (!src) continue;
+            if (src.startsWith('//')) src = 'https:' + src;
+
+            const lowerSrc = src.toLowerCase();
+            // Ignorar íconos, banderas, SVGs o retratos con el apellido del director
+            if (
+              lowerSrc.endsWith('.svg') ||
+              lowerSrc.includes('flag_of_') ||
+              lowerSrc.includes('commons-logo') ||
+              lowerSrc.includes('question_book') ||
+              (directorLastName && lowerSrc.includes(directorLastName))
+            ) {
+              continue;
+            }
+
+            const widthAttr = parseInt(img.getAttribute('width') || '200', 10);
+            if (widthAttr < 80) continue;
+
+            return src;
+          }
+        } catch (e) {}
+        return null;
+      }
+
+      // Respaldo 2: Consultar catálogos oficiales con soporte CORS nativo y validación estricta de película
+      async function fetchPosterFromOpenCatalogs(film) {
+        const normalize = (str) => (str || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9\s]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        const targetTitle = normalize(film.title);
+        const targetOrig = normalize(film.originalTitle || film.title);
+        const targetDirectorFull = normalize(film.director);
+        const directorParts = targetDirectorFull.split(' ').filter(Boolean);
+        const directorLastName = directorParts[directorParts.length - 1] || targetDirectorFull;
+
+        // A. Si el usuario configuró TMDB_API_KEY
+        if (TMDB_API_KEY) {
+          try {
+            const tmdbUrl = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(film.title)}&year=${film.year}&language=es-MX`;
+            const res = await fetch(tmdbUrl);
+            const data = await res.json();
+            if (data.results && data.results[0] && data.results[0].poster_path) {
+              return `https://image.tmdb.org/t/p/w500${data.results[0].poster_path}`;
+            }
+          } catch (e) {}
+        }
+
+        // B. Buscar en iTunes Movie API enviando SOLO el título en "term" (para que Apple filtre películas)
+        // y verificando en JS que el director (artistName) coincida con el de la película.
+        const titlesToSearch = Array.from(new Set([film.title, film.originalTitle].filter(Boolean)));
+
+        for (const country of ['MX', 'US']) {
+          for (const titleQuery of titlesToSearch) {
+            try {
+              const itunesUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(titleQuery)}&country=${country}&media=movie&entity=movie&limit=15`;
+              const res = await fetch(itunesUrl);
+              if (!res.ok) continue;
+              const data = await res.json();
+              if (data.results && data.results.length > 0) {
+                const match = data.results.find(item => {
+                  const track = normalize(item.trackName);
+                  const artist = normalize(item.artistName);
+
+                  const directorMatches = artist.includes(targetDirectorFull) || artist.includes(directorLastName);
+                  const titleMatches =
+                    track === targetTitle ||
+                    track === targetOrig ||
+                    track.startsWith(targetTitle) ||
+                    track.startsWith(targetOrig);
+
+                  return directorMatches && titleMatches;
+                });
+
+                if (match && match.artworkUrl100) {
+                  return match.artworkUrl100.replace('100x100bb.jpg', '600x900bb.jpg');
+                }
+              }
+            } catch (e) {}
+          }
+        }
+
+        // C. Extraer el póster oficial directamente del ".infobox" de la película en Wikipedia (sección 0),
+        // nunca de "pageimages" para evitar que devuelva fotos libres de directores o actores.
+        if (film.wikiPage) {
+          const directInfoboxPoster =
+            (await fetchWikipediaInfoboxPoster(film.wikiPage, 'en', directorLastName)) ||
+            (await fetchWikipediaInfoboxPoster(film.wikiPage, 'es', directorLastName));
+          if (directInfoboxPoster) return directInfoboxPoster;
+        }
+
+        // D. Si una película nueva no tiene "wikiPage", buscar el artículo que coincida con Título + Director
+        // y extraer únicamente la portada de su ".infobox".
+        const wikiQueries = [
+          `"${film.originalTitle || film.title}" "${film.director}"`,
+          `"${film.title}" "${film.director}"`
+        ];
+
+        for (const lang of ['en', 'es']) {
+          for (const wq of wikiQueries) {
+            try {
+              const searchUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(wq)}&srlimit=3&format=json&origin=*`;
+              const res = await fetch(searchUrl);
+              if (!res.ok) continue;
+              const data = await res.json();
+              const hits = data?.query?.search || [];
+
+              for (const hit of hits) {
+                const hitTitleNorm = normalize(hit.title);
+                if (hitTitleNorm.includes(targetTitle) || hitTitleNorm.includes(targetOrig)) {
+                  const poster = await fetchWikipediaInfoboxPoster(hit.title, lang, directorLastName);
+                  if (poster) return poster;
+                }
+              }
+            } catch (e) {}
+          }
+        }
+
+        return null;
+      }
+
+      // Orquestador asíncrono que resuelve el póster de cada película y actualiza el DOM automáticamente
+      async function resolveAndInjectPoster(film) {
+        if (film.posterUrl) return film.posterUrl;
+        const cacheKey = film.letterboxdUrl || film.title;
+
+        if (posterCache.has(cacheKey)) {
+          return posterCache.get(cacheKey);
+        }
+
+        if (pendingPosterRequests.has(cacheKey)) {
+          return pendingPosterRequests.get(cacheKey);
+        }
+
+        const promise = (async () => {
+          // 1. Consultar primero los catálogos abiertos con validación estricta (Wikipedia EN pilicense=any / iTunes MX-US)
+          let foundUrl = await fetchPosterFromOpenCatalogs(film);
+
+          // 2. Respaldo: extraer directamente desde la página de Letterboxd
+          if (!foundUrl) {
+            foundUrl = await fetchPosterFromLetterboxdPage(film.letterboxdUrl);
+          }
+
+          if (foundUrl) {
+            posterCache.set(cacheKey, foundUrl);
+            film.posterUrl = foundUrl;
+            // Actualizar todas las imágenes en pantalla que correspondan a esta película
+            document.querySelectorAll(`img[data-poster-for="${film.id}"]`).forEach(img => {
+              img.src = foundUrl;
+            });
+          }
+          pendingPosterRequests.delete(cacheKey);
+          return foundUrl;
+        })();
+
+        pendingPosterRequests.set(cacheKey, promise);
+        return promise;
+      }
+
+      /* ----------------------------------------------------------------------
+         4. RENDERIZADO DE CONTROLES Y CARTELERA
+         ---------------------------------------------------------------------- */
+      function renderDayStrip() {
+        const container = document.getElementById('day-strip');
+        container.innerHTML = DAYS.map(day => {
+          const isSelected = day.id === state.selectedDay;
+          return `
+            <button type="button"
+                    class="day-tab"
+                    data-day="${day.id}"
+                    aria-pressed="${isSelected}">
+              <span class="day-dot" style="background-color: ${day.color}; box-shadow: 0 0 6px ${day.color}80;" aria-hidden="true"></span>
+              <span>${day.label}</span>
+            </button>
+          `;
+        }).join('');
+
+        container.querySelectorAll('.day-tab').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.selectedDay = btn.getAttribute('data-day');
+            renderDayStrip();
+            renderAgenda();
+          });
+        });
+      }
+
+      function renderAgenda() {
+        const agendaEl = document.getElementById('agenda');
+        const emptyEl = document.getElementById('global-empty');
+        const statusEl = document.getElementById('results-status');
+        const dayObj = DAYS.find(d => d.id === state.selectedDay) || DAYS[0];
+
+        document.getElementById('current-day-title').textContent = `Programación del ${dayObj.label}`;
+
+        const rawFilms = SCHEDULE[state.selectedDay] || [];
+        const query = state.searchQuery.trim().toLowerCase();
+
+        const filtered = rawFilms.filter(film => {
+          if (!query) return true;
+          return (
+            film.title.toLowerCase().includes(query) ||
+            film.director.toLowerCase().includes(query) ||
+            film.country.toLowerCase().includes(query) ||
+            film.ciclo.toLowerCase().includes(query)
+          );
+        });
+
+        statusEl.textContent = `${filtered.length} películas encontradas para el ${dayObj.label}`;
+
+        if (filtered.length === 0) {
+          agendaEl.innerHTML = '';
+          emptyEl.hidden = false;
+          return;
+        }
+
+        emptyEl.hidden = true;
+
+        // Ajustar clases del contenedor según el modo de vista (Boceto 3 columnas vs Lista)
+        if (state.viewMode === 'grid') {
+          agendaEl.className = 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5';
+        } else {
+          agendaEl.className = 'flex flex-col gap-3 max-w-4xl mx-auto';
+        }
+
+        agendaEl.innerHTML = filtered.map(film => {
+          const posterUrl = getPosterUrl(film);
+          const fallbackUrl = getFallbackPlaceholderUrl(film);
+          return `
+            <article class="film-card group" data-film-id="${film.id}">
+              <!-- Póster Izquierdo (Conectado a Letterboxd/TMDB con fallback a placeholder) -->
+              <button type="button"
+                      data-open-sheet="${film.id}"
+                      class="w-28 sm:w-32 aspect-[2/3] rounded-lg overflow-hidden border shrink-0 relative focus:outline-none group/poster"
+                      style="border-color: var(--border-hairline); background-color: var(--bg-subtle);"
+                      aria-label="Ver detalles de ${film.title}">
+                <img src="${posterUrl}"
+                     data-poster-for="${film.id}"
+                     alt="Póster de ${film.title}"
+                     loading="lazy"
+                     onerror="this.onerror=null; this.src='${fallbackUrl}';"
+                     class="w-full h-full object-cover transition-transform duration-300 group-hover/poster:scale-105" />
+                <span class="absolute bottom-1.5 left-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-mono-tech rounded bg-black/75 text-white truncate">
+                  ${film.duration}
+                </span>
+              </button>
+
+              <!-- Columna Derecha de Información (Fiel a las líneas del wireframe) -->
+              <div class="flex-1 min-w-0 flex flex-col justify-between h-full">
+                <div>
+                  <!-- Línea 1: Título de la película + Botón Boletos en la esquina superior derecha -->
+                  <div class="flex items-start justify-between gap-2 mb-1">
+                    <h3 class="font-bold text-base sm:text-lg leading-snug tracking-tight">
+                      <button type="button" data-open-sheet="${film.id}" class="text-left hover:underline focus:outline-none">
+                        ${film.title}
+                      </button>
+                    </h3>
+                    <button type="button"
+                            data-open-buy="${film.id}"
+                            class="ticket-badge-btn"
+                            title="Comprar boletos para ${film.title} a las ${film.time}">
+                      <span>Boletos</span>
+                      <span aria-hidden="true">↗</span>
+                    </button>
+                  </div>
+
+                  <!-- Línea 2: Director · Año · País -->
+                  <p class="text-xs font-medium mb-2.5" style="color: var(--text-muted);">
+                    ${film.director} · <span class="font-mono-tech">${film.year}</span> · ${film.country}
+                  </p>
+
+                  <!-- Línea 3 (Boceto): HORARIO -->
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <span class="text-[11px] font-mono-tech uppercase tracking-wider" style="color: var(--text-faint);">HORARIO:</span>
+                    <button type="button"
+                            data-open-buy="${film.id}"
+                            class="px-2 py-0.5 rounded text-xs font-mono-tech font-semibold border transition-colors hover:opacity-80"
+                            style="background-color: var(--bg-subtle); border-color: var(--border-hairline); color: var(--text-main);">
+                      ${film.time} h
+                    </button>
+                  </div>
+
+                  <!-- Línea 4 (Boceto): LETTERBOXD: ★★★★★ -->
+                  <div class="letterboxd-row flex items-center gap-1.5 mb-2.5">
+                    <a href="${film.letterboxdUrl}" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1.5 text-[11px] font-mono-tech uppercase tracking-wider hover:underline"
+                       style="color: var(--text-faint);"
+                       title="Ver en Letterboxd">
+                      <!-- Tres círculos de Letterboxd -->
+                      <span class="inline-flex items-center -space-x-0.5" aria-hidden="true">
+                        <span class="w-2 h-2 rounded-full bg-[#ff8000]"></span>
+                        <span class="w-2 h-2 rounded-full bg-[#00e054]"></span>
+                        <span class="w-2 h-2 rounded-full bg-[#40bcf4]"></span>
+                      </span>
+                      <span>LETTERBOXD:</span>
+                    </a>
+                    <div class="inline-flex items-center gap-1" aria-label="Calificación ${film.rating} de 5 estrellas">
+                      ${renderStarsSVG(film.rating)}
+                      <span class="text-xs font-mono-tech font-semibold ml-0.5">${film.rating.toFixed(1)}</span>
+                    </div>
+                  </div>
+
+                  <!-- Líneas 5 y 6 (Boceto): Breve sinopsis -->
+                  <p class="text-xs leading-relaxed line-clamp-3" style="color: var(--text-muted);">
+                    ${film.synopsis}
+                  </p>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        // Eventos para abrir ficha de película
+        agendaEl.querySelectorAll('[data-open-sheet]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const filmId = btn.getAttribute('data-open-sheet');
+            openFilmSheet(filmId);
+          });
+        });
+
+        // Eventos para abrir modal de compra de boletos
+        agendaEl.querySelectorAll('[data-open-buy]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const filmId = btn.getAttribute('data-open-buy');
+            openBuyModal(filmId);
+          });
+        });
+
+        // Resolver automáticamente en segundo plano las portadas desde Letterboxd/catálogos para las películas sin posterUrl fijo
+        filtered.forEach(film => {
+          if (!film.posterUrl) {
+            resolveAndInjectPoster(film);
+          }
+        });
+      }
+
+      /* ----------------------------------------------------------------------
+         5. NAVEGACIÓN DE LAS SECCIONES DEL BOCETO (CARTELERA | CONVOCATORIAS)
+         ---------------------------------------------------------------------- */
+      function renderSectionNav() {
+        const navBtns = document.querySelectorAll('.section-nav-btn');
+        navBtns.forEach(btn => {
+          const sec = btn.getAttribute('data-section');
+          if (sec === state.activeSection) {
+            btn.style.backgroundColor = 'var(--accent)';
+            btn.style.color = 'var(--accent-fg)';
+            btn.setAttribute('aria-current', 'page');
+          } else {
+            btn.style.backgroundColor = 'transparent';
+            btn.style.color = 'var(--text-muted)';
+            btn.removeAttribute('aria-current');
+          }
+        });
+
+        const carteleraControls = document.getElementById('cartelera-controls');
+        const dayHeaderBanner = document.getElementById('day-header-banner');
+        const agendaEl = document.getElementById('agenda');
+        const emptyEl = document.getElementById('global-empty');
+        const secondaryEl = document.getElementById('secondary-section');
+
+        if (state.activeSection === 'cartelera') {
+          carteleraControls.hidden = false;
+          dayHeaderBanner.hidden = false;
+          agendaEl.hidden = false;
+          secondaryEl.hidden = true;
+          renderAgenda();
+        } else {
+          carteleraControls.hidden = true;
+          dayHeaderBanner.hidden = true;
+          agendaEl.hidden = true;
+          emptyEl.hidden = true;
+          secondaryEl.hidden = false;
+          renderSecondarySectionContent(state.activeSection);
+        }
+      }
+
+      function renderSecondarySectionContent(section) {
+        const container = document.getElementById('secondary-section');
+
+        if (section === 'convocatorias') {
+          container.innerHTML = `
+            <div class="max-w-4xl">
+              <span class="text-xs font-mono-tech uppercase tracking-widest px-2.5 py-1 rounded border mb-3 inline-block" style="border-color: var(--border-hairline);">Pantalla Abierta</span>
+              <h2 class="text-2xl font-bold mb-2">Convocatorias Abiertas</h2>
+              <p class="text-sm mb-6" style="color: var(--text-muted);">¿Tienes un cortometraje o largometraje independiente? El Patio Cine abre su pantalla a realizadores locales.</p>
+              <div class="p-6 rounded-2xl border space-y-3" style="background-color: var(--bg-elevated); border-color: var(--border-hairline);">
+                <h3 class="font-bold text-lg">Muestra de Cortometraje Universitario y Regional</h3>
+                <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
+                  Recibimos obras de ficción, documental y experimental de hasta 25 minutos para proyectarse previo a nuestras funciones estelares de los viernes y sábados.
+                </p>
+                <p class="text-xs font-mono-tech">Contacto: programacion@elpatiocine.mx</p>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         6. FICHA DE PELÍCULA (#film-sheet)
+         ---------------------------------------------------------------------- */
+      function findFilmById(filmId) {
+        const currentList = SCHEDULE[state.selectedDay] || [];
+        let found = currentList.find(f => f.id === filmId);
+        if (found) return found;
+        for (const key of Object.keys(SCHEDULE)) {
+          found = SCHEDULE[key].find(f => f.id === filmId);
+          if (found) return found;
+        }
+        return null;
+      }
+
+      function openFilmSheet(filmId) {
+        const film = findFilmById(filmId);
+        if (!film) return;
+        state.activeFilm = film;
+
+        const sheet = document.getElementById('film-sheet');
+        const body = document.getElementById('sheet-body');
+        const dayObj = DAYS.find(d => d.id === state.selectedDay) || DAYS[0];
+        const fallbackUrl = getFallbackPlaceholderUrl(film);
+
+        body.innerHTML = `
+          <div class="flex flex-col sm:flex-row gap-5">
+            <img src="${getPosterUrl(film)}"
+                 data-poster-for="${film.id}"
+                 alt="Póster de ${film.title}"
+                 onerror="this.onerror=null; this.src='${fallbackUrl}';"
+                 class="w-36 sm:w-44 aspect-[2/3] rounded-xl object-cover border mx-auto sm:mx-0 shrink-0"
+                 style="border-color: var(--border-hairline);" />
+            <div class="flex-1">
+              <h2 id="film-sheet-title" class="text-2xl font-bold tracking-tight mb-0.5">${film.title}</h2>
+              <p class="text-xs italic mb-2" style="color: var(--text-faint);">Título original: ${film.originalTitle}</p>
+              <p class="text-sm font-medium mb-3" style="color: var(--text-muted);">
+                Dirigida por <strong>${film.director}</strong> · ${film.year} · ${film.country} · ${film.duration}
+              </p>
+
+              <div class="letterboxd-row flex items-center gap-2 mb-4 p-2.5 rounded-lg border"
+                   style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+                <span class="text-xs font-mono-tech">Letterboxd:</span>
+                <div class="inline-flex items-center gap-1">
+                  ${renderStarsSVG(film.rating)}
+                  <span class="text-xs font-mono-tech font-bold ml-1">${film.rating.toFixed(1)} / 5.0</span>
+                </div>
+                <a href="${film.letterboxdUrl}" target="_blank" rel="noopener noreferrer"
+                   class="ml-auto text-xs underline font-mono-tech">ver reseñas ↗</a>
+              </div>
+
+              <p class="text-sm leading-relaxed mb-5" style="color: var(--text-main);">
+                ${film.synopsis}
+              </p>
+
+              <div class="p-3.5 rounded-xl border flex flex-wrap items-center justify-between gap-3"
+                   style="background-color: var(--bg-subtle); border-color: var(--border-hairline);">
+                <div>
+                  <span class="text-[11px] font-mono-tech block uppercase" style="color: var(--text-faint);">Función (${dayObj.label})</span>
+                  <span class="text-base font-mono-tech font-bold">${film.time} h</span>
+                </div>
+                <button type="button" id="sheet-buy-trigger" class="pill-btn">
+                  Generar pase ($65) ↗
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('sheet-buy-trigger').addEventListener('click', () => {
+          sheet.hidden = true;
+          openBuyModal(film.id);
+        });
+
+        sheet.hidden = false;
+      }
+
+      /* ----------------------------------------------------------------------
+         7. MODAL DE PASE PARA TAQUILLA (#buy-modal)
+         ---------------------------------------------------------------------- */
+      function openBuyModal(filmId) {
+        const film = findFilmById(filmId);
+        if (!film) return;
+        state.activeFilm = film;
+        state.ticketQty = 2;
+
+        const dayObj = DAYS.find(d => d.id === state.selectedDay) || DAYS[0];
+        document.getElementById('buy-film-title').textContent = film.title;
+        document.getElementById('buy-film-meta').textContent = `${dayObj.label} · ${film.time} h · Dir. ${film.director} (${film.year})`;
+        document.getElementById('buy-success-msg').hidden = true;
+        updateTicketTotals();
+
+        document.getElementById('buy-modal').hidden = false;
+      }
+
+      function updateTicketTotals() {
+        document.getElementById('ticket-qty').textContent = state.ticketQty;
+        document.getElementById('ticket-total').textContent = `$${state.ticketQty * 65} MXN`;
+      }
+
+      /* ----------------------------------------------------------------------
+         8. INICIALIZACIÓN Y EVENT LISTENERS GLOBALES
+         ---------------------------------------------------------------------- */
+      function init() {
+        // Mostrar fecha actual en el header estilo Heliouz
+        const dateKicker = document.getElementById('date-kicker');
+        const now = new Date();
+        dateKicker.textContent = now.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' });
+
+        // Render inicial
+        renderDayStrip();
+        renderSectionNav();
+
+        // Eventos del menú principal (CARTELERA | EVENTOS | FESTIVAL DOCUMENTAL | CONVOCATORIAS)
+        document.querySelectorAll('.section-nav-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.activeSection = btn.getAttribute('data-section');
+            renderSectionNav();
+          });
+        });
+
+        // Click en el logo regresa a Cartelera
+        document.getElementById('brand-logo').addEventListener('click', (e) => {
+          e.preventDefault();
+          state.activeSection = 'cartelera';
+          renderSectionNav();
+        });
+
+        // Toggle de Tema Claro / Oscuro
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', () => {
+          const html = document.documentElement;
+          const current = html.getAttribute('data-theme') || 'light';
+          const next = current === 'light' ? 'dark' : 'light';
+          html.setAttribute('data-theme', next);
+          themeBtn.setAttribute('aria-pressed', String(next === 'dark'));
+        });
+
+        // Buscador en tiempo real
+        const searchInput = document.getElementById('search-input');
+        const searchClear = document.getElementById('search-clear');
+        const clearFiltersBtn = document.getElementById('clear-filters-btn');
+
+        searchInput.addEventListener('input', (e) => {
+          state.searchQuery = e.target.value;
+          searchClear.hidden = !state.searchQuery;
+          renderAgenda();
+        });
+
+        const clearSearch = () => {
+          state.searchQuery = '';
+          searchInput.value = '';
+          searchClear.hidden = true;
+          renderAgenda();
+        };
+
+        searchClear.addEventListener('click', clearSearch);
+        clearFiltersBtn.addEventListener('click', clearSearch);
+
+        // Toggle de Vista (Boceto 3 columnas vs Lista)
+        document.querySelectorAll('#view-toggle .view-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.viewMode = btn.getAttribute('data-view');
+            document.querySelectorAll('#view-toggle .view-btn').forEach(b => {
+              const isPressed = b.getAttribute('data-view') === state.viewMode;
+              b.setAttribute('aria-pressed', String(isPressed));
+              b.style.backgroundColor = isPressed ? 'var(--bg-elevated)' : 'transparent';
+              b.style.boxShadow = isPressed ? '0 1px 3px rgba(0,0,0,0.1)' : 'none';
+            });
+            renderAgenda();
+          });
+        });
+        // Estilo activo inicial para el botón de vista
+        document.querySelector('#view-toggle [data-view="grid"]').click();
+
+        // Modal Acerca de y Switch de Calificaciones Letterboxd
+        const aboutModal = document.getElementById('about-modal');
+        document.getElementById('info-btn').addEventListener('click', () => { aboutModal.hidden = false; });
+        document.getElementById('footer-about-trigger').addEventListener('click', () => { aboutModal.hidden = false; });
+        document.querySelectorAll('[data-close-about]').forEach(el => {
+          el.addEventListener('click', () => { aboutModal.hidden = true; });
+        });
+
+        const ratingsToggle = document.getElementById('ratings-toggle');
+        ratingsToggle.addEventListener('click', () => {
+          state.showRatings = !state.showRatings;
+          ratingsToggle.setAttribute('aria-checked', String(state.showRatings));
+          document.body.classList.toggle('hide-ratings', !state.showRatings);
+        });
+
+        // Cerrar Ficha de Película
+        const filmSheet = document.getElementById('film-sheet');
+        document.querySelectorAll('[data-close-sheet]').forEach(el => {
+          el.addEventListener('click', () => { filmSheet.hidden = true; });
+        });
+
+        // Controles del Modal de Compra de Boletos
+        const buyModal = document.getElementById('buy-modal');
+        document.querySelectorAll('[data-close-buy]').forEach(el => {
+          el.addEventListener('click', () => { buyModal.hidden = true; });
+        });
+
+        document.getElementById('qty-minus').addEventListener('click', () => {
+          if (state.ticketQty > 1) {
+            state.ticketQty--;
+            updateTicketTotals();
+          }
+        });
+
+        document.getElementById('qty-plus').addEventListener('click', () => {
+          if (state.ticketQty < 10) {
+            state.ticketQty++;
+            updateTicketTotals();
+          }
+        });
+
+        document.getElementById('confirm-buy-btn').addEventListener('click', () => {
+          const film = state.activeFilm || (SCHEDULE[state.selectedDay] && SCHEDULE[state.selectedDay][0]) || SCHEDULE.martes[0];
+          if (!film) return;
+          const msg = document.getElementById('buy-success-msg');
+          const folio = 'PATIO-' + Math.floor(1000 + Math.random() * 9000);
+          msg.textContent = `¡Pase generado! Código ${folio} (${state.ticketQty} boletos para "${film.title}" a las ${film.time} h). Muestra este código en taquilla para realizar tu pago.`;
+          msg.hidden = false;
+        });
+
+        // Cerrar cualquier modal con la tecla Escape
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            aboutModal.hidden = true;
+            filmSheet.hidden = true;
+            buyModal.hidden = true;
+          }
+        });
+      }
+
+      window.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>
